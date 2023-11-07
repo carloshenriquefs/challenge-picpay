@@ -27,4 +27,13 @@ public class User {
     private String password;
     private UserType userType;
     private BigDecimal balance;
+
+    public User(UserDTO userDTO) {
+        this.name = userDTO.name();
+        this.document = userDTO.document();
+        this.email = userDTO.email();
+        this.password = userDTO.password();
+        this.userType = userDTO.userType();
+        this.balance = userDTO.balance();
+    }
 }
