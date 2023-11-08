@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.picpay.challenge.picpay.constants.Constants.*;
+
 @Service
 public class UserService {
 
@@ -31,17 +33,17 @@ public class UserService {
     }
 
     public User findUserById(Long id) throws Exception {
-        return this.userRepository.findById(id).orElseThrow(() -> new Exception("Usuário não encontrado."));
+        return this.userRepository.findById(id).orElseThrow(() -> new Exception(USUARIO_NAO_ENCONTRADO));
     }
 
     public boolean validateUser(User payer, BigDecimal amount) throws Exception {
 
         if (payer.getUserType() == UserType.MERCHANT) {
-            throw new Exception("Um usuário Lojista não pode realizar transações.");
+            throw new Exception(LOJISTA_NAO_PODE_REALIZAR);
         }
 
         if (payer.getBalance().compareTo(amount) < 0) {
-            throw new Exception("Saldo insuficiente.");
+            throw new Exception(SALDO_INSUFICIENTE);
         }
 
         return true;

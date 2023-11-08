@@ -11,6 +11,8 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+import static com.picpay.challenge.picpay.constants.Constants.*;
+
 @Service
 public class TransactionService {
 
@@ -26,7 +28,8 @@ public class TransactionService {
     @Autowired
     private NotificationService notificationService;
 
-    public Transaction createTransaction(TransactionDTO transactionDTO) throws Exception {
+    public Transaction valideTransaction(TransactionDTO transactionDTO) throws Exception {
+        Transaction transaction = new Transaction();
 
         var payer = this.userService.findUserById(transactionDTO.payerId());
         var payee = this.userService.findUserById(transactionDTO.payeeId());
@@ -36,24 +39,31 @@ public class TransactionService {
         boolean isAuthorize = authorizeTransaction();
 
         if (!isAuthorize) {
-            throw new Exception("Transação não autorizada.");
+            throw new Exception(TRANSACAO_NAO_AUTORIZADA);
         }
+
+        return transaction;
+    }
+
+    public Transaction createTransaction(TransactionDTO transactionDTO) throws Exception {
+
+        var transaction = valideTransaction(transactionDTO);
 
         Transaction newTransaction = new Transaction();
         newTransaction.setAmount(transactionDTO.amount());
-        newTransaction.setPayer(payer);
-        newTransaction.setPayee(payee);
+        newTransaction.setPayer(transaction.getPayer());
+        newTransaction.setPayee(transaction.getPayee());
         newTransaction.setTransactionTime(LocalDateTime.now());
 
-        payer.setBalance(payer.getBalance().subtract(transactionDTO.amount()));
-        payee.setBalance(payee.getBalance().add(transactionDTO.amount()));
+        transaction.getPayer().setBalance(transaction.getPayer().getBalance().subtract(transactionDTO.amount()));
+        transaction.getPayee().setBalance(transaction.getPayee().getBalance().add(transactionDTO.amount()));
 
         this.transactionRepository.save(newTransaction);
-        this.userService.saveUser(payer);
-        this.userService.saveUser(payee);
+        this.userService.saveUser(transaction.getPayer());
+        this.userService.saveUser(transaction.getPayee());
 
-        notificationService.sendNotification(payer, "Transação realizada com sucesso.");
-        notificationService.sendNotification(payee, "Transação recebida com sucesso.");
+        notificationService.sendNotification(transaction.getPayer(), TRANSACAO_REALIZADA_COM_SUCESSO);
+        notificationService.sendNotification(transaction.getPayee(), TRANSACAO_RECEBIDA_COM_SUCESSO);
 
         return newTransaction;
     }
