@@ -39,7 +39,7 @@ public class UserService {
     public boolean validateUser(User payer, BigDecimal amount) throws Exception {
 
         if (payer.getUserType() == UserType.MERCHANT) {
-            throw new Exception(LOJISTA_NAO_PODE_REALIZAR);
+            throw new Exception(LOJISTA_NAO_PODE_REALIZAR_TRANSACAO);
         }
 
         if (payer.getBalance().compareTo(amount) < 0) {
