@@ -1,5 +1,6 @@
 package com.picpay.challenge.picpay.domain.user;
 
+import com.picpay.challenge.picpay.dtos.UserDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,8 @@ public class User {
     private Long id;
     private String name;
 
+    private String lastName;
+
     @Column(unique = true)
     private String document;
 
@@ -32,6 +35,7 @@ public class User {
 
     public User(UserDTO userDTO) {
         this.name = userDTO.name();
+        this.lastName = userDTO.lastName();
         this.document = userDTO.document();
         this.email = userDTO.email();
         this.password = userDTO.password();

@@ -1,4 +1,4 @@
-package com.picpay.challenge.picpay.domain.transaction;
+package com.picpay.challenge.picpay.dtos;
 
 import java.math.BigDecimal;
 

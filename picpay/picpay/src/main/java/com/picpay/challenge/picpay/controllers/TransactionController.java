@@ -2,7 +2,7 @@ package com.picpay.challenge.picpay.controllers;
 
 
 import com.picpay.challenge.picpay.domain.transaction.Transaction;
-import com.picpay.challenge.picpay.domain.transaction.TransactionDTO;
+import com.picpay.challenge.picpay.dtos.TransactionDTO;
 import com.picpay.challenge.picpay.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ public class TransactionController {
 
     @PostMapping
     public ResponseEntity<Transaction> createTransaction(@RequestBody TransactionDTO transactionDTO) throws Exception {
-        var newTransaction = transactionService.createTransaction(transactionDTO);
+        var newTransaction = this.transactionService.createTransaction(transactionDTO);
         return new ResponseEntity<>(newTransaction, HttpStatus.CREATED);
     }
 }

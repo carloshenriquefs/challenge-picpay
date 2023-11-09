@@ -1,7 +1,7 @@
 package com.picpay.challenge.picpay.services;
 
 import com.picpay.challenge.picpay.domain.user.User;
-import com.picpay.challenge.picpay.domain.user.UserDTO;
+import com.picpay.challenge.picpay.dtos.UserDTO;
 import com.picpay.challenge.picpay.domain.user.UserType;
 import com.picpay.challenge.picpay.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

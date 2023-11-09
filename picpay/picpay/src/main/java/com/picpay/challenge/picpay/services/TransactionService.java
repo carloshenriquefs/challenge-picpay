@@ -1,7 +1,7 @@
 package com.picpay.challenge.picpay.services;
 
 import com.picpay.challenge.picpay.domain.transaction.Transaction;
-import com.picpay.challenge.picpay.domain.transaction.TransactionDTO;
+import com.picpay.challenge.picpay.dtos.TransactionDTO;
 import com.picpay.challenge.picpay.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,8 +62,8 @@ public class TransactionService {
         this.userService.saveUser(transaction.getPayer());
         this.userService.saveUser(transaction.getPayee());
 
-        notificationService.sendNotification(transaction.getPayer(), TRANSACAO_REALIZADA_COM_SUCESSO);
-        notificationService.sendNotification(transaction.getPayee(), TRANSACAO_RECEBIDA_COM_SUCESSO);
+        this.notificationService.sendNotification(transaction.getPayer(), TRANSACAO_REALIZADA_COM_SUCESSO);
+        this.notificationService.sendNotification(transaction.getPayee(), TRANSACAO_RECEBIDA_COM_SUCESSO);
 
         return newTransaction;
     }
